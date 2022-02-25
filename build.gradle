@@ -28,6 +28,15 @@ allprojects {
         mavenCentral()
         google()
     }
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+    dependencies {
+        implementation libs.springBootWeb
+        implementation libs.lombok
+    }
 }
 configurations {
     compileOnly{
