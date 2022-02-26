@@ -1,8 +1,11 @@
 package com.bilgeadam.controller;
 
+import com.bilgeadam.dto.request.DoLoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.mapper.UserMapper;
 import com.bilgeadam.repository.entity.User;
 import com.bilgeadam.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +21,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserMapper userMapper;
+
     //ReturnType
     /// -> returnCode -> error -> 9xxx -> 9001 -> username and password error
     // -> success ->1xxx -> 1000, 1100
     // Burada validasyon yapılmalı
 
     @PostMapping("/doLogin")
-    public ResponseEntity<User> doLogin(String username, String password) {
-        Optional<User> user = userService.findByUsernameAndPassword(username,password);
+    @Operation(summary = "Kullanıcı girişi için kullanılacak metot")
+    public ResponseEntity<User> doLogin(@RequestBody @Valid DoLoginRequestDto dto) {
+        Optional<User> user = userService.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
         if(user.isPresent())
             return ResponseEntity.ok(user.get());
         return ResponseEntity.ok(new User());
@@ -35,10 +42,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterRequestDto dto) {
         //1.Etapta -> Auth için kayıt olmalı
-        userService.saveReturnUser(User.builder()
-                        .username(dto.getEmail())
-                        .password(dto.getSifre())
-                        .build());
+        userService.saveReturnUser(dto);
         //2.Etapta -> UserService e kayıt için istek atmalı, dönen cevaba göre işlem devam etmeli
 
         return ResponseEntity.ok().build();
