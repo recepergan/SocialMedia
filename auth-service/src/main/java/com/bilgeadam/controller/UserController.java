@@ -2,6 +2,7 @@ package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.DoLoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.response.DoLoginResponseDto;
 import com.bilgeadam.mapper.UserMapper;
 import com.bilgeadam.repository.entity.User;
 import com.bilgeadam.service.UserService;
@@ -31,11 +32,8 @@ public class UserController {
 
     @PostMapping("/doLogin")
     @Operation(summary = "Kullanıcı girişi için kullanılacak metot")
-    public ResponseEntity<User> doLogin(@RequestBody @Valid DoLoginRequestDto dto) {
-        Optional<User> user = userService.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
-        if(user.isPresent())
-            return ResponseEntity.ok(user.get());
-        return ResponseEntity.ok(new User());
+    public ResponseEntity<DoLoginResponseDto> doLogin(@RequestBody @Valid DoLoginRequestDto dto) {
+       return ResponseEntity.ok(userService.findByUsernameAndPassword(dto));
 
     }
 
