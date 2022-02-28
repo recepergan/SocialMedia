@@ -1,21 +1,21 @@
 package com.bilgeadam.repository.entity;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
+@Data
 @Builder
 @Document
-public class Profile {
-
+public class Profile implements Serializable {
     @Id
     String id;
     long authid;
@@ -28,21 +28,29 @@ public class Profile {
     String gender;
     String about;
     List<Interest> interest;
+    Education education;
+    Work work;
+
+    @Document
+    @Data
+    public static class Education implements Serializable{
+        String name;
+        int from;
+        int to;
+        String about;
+
+    }
+
+    @Document
+    @Data
+    public static class Work implements Serializable{
+        String company;
+        String designation;
+        int from;
+        int to;
+        String town;
+        String description;
+    }
 
 
-class Education {
-    String name;
-    int from;
-    int to;
-    String about;
-}
-class Work {
-    String company;
-    String designation;
-    int from;
-    int to;
-    String town;
-    String description;
-
-}
 }

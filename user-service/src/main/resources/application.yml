@@ -5,7 +5,7 @@ spring:
   data:
     mongodb:
       database: socialmedia
-      usename: bilgeadamuser
+      username: bilgeadamuser
       password: '!bilgeadam'
       host: localhost
       port: 27000
